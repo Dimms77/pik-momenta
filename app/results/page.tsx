@@ -1,12 +1,12 @@
 'use client';
 
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
 import { ResultTimeline } from '@/components/ResultTimeline';
 import { loadSession } from '@/lib/storage';
 import { formatSeconds, getResultTone, type RoundResult } from '@/lib/game-logic';
 
-export default function ResultsPage() {
+function ResultsPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [ready, setReady] = useState(false);
@@ -38,7 +38,7 @@ export default function ResultsPage() {
         <div className="card-surface max-w-xl rounded-[2rem] p-8 text-center">
           <h1 className="text-3xl font-semibold text-white">Раунд не найден</h1>
           <p className="mt-4 text-sm leading-7 text-white/65">
-            Данные последнего результата потерялись. Вернись на главную и начни сессию заново.
+            Похоже, данные последнего результата потерялись. Вернись на главную и начни сессию заново.
           </p>
           <button
             type="button"
@@ -147,5 +147,13 @@ export default function ResultsPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ResultsPageInner />
+    </Suspense>
   );
 }

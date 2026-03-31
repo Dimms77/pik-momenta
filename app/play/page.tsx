@@ -1,13 +1,13 @@
 'use client';
 
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
 import { VideoStage } from '@/components/VideoStage';
 import { getRoundsByMode, modeLabels, type GameMode } from '@/lib/game-data';
 import { calculateScore, type RoundResult } from '@/lib/game-logic';
 import { loadSession, saveSession } from '@/lib/storage';
 
-export default function PlayPage() {
+function PlayPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -151,5 +151,13 @@ export default function PlayPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function PlayPage() {
+  return (
+    <Suspense fallback={null}>
+      <PlayPageInner />
+    </Suspense>
   );
 }
